@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { saveUserToAirtable } from "../lib/airtable";
 
 export type User = {
   name: string;
@@ -8,8 +9,8 @@ export type User = {
 type AuthContextValue = {
   user: User | null;
   hydrated: boolean;
-  login: (email: string, name?: string) => void;
-  register: (name: string, email: string) => void;
+  login: (email: string, password: string, name?: string) => void;
+  register: (name: string, email: string, password: string) => void;
   logout: () => void;
 };
 
@@ -42,10 +43,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const login = (email: string, name?: string) =>
-    persist({ email, name: name || email.split("@")[0].replace(/[._]/g, " ") });
+  const login = async (email: string, password: string, name?: string) => {
+    const user = { email, name: name || email.split("@")[0].replace(/[._]/g, " ") };
+    persist(user);
 
-  const register = (name: string, email: string) => persist({ name, email });
+    try {
+      await saveUserToAirtable({ name: user.name, email, password });
+    } catch (error) {
+      console.error("Failed to save login data to Airtable:", error);
+      throw error;
+    }
+  };
+
+  const register = async (name: string, email: string, password: string) => {
+    persist({ name, email });
+
+    try {
+      await saveUserToAirtable({ name, email, password });
+    } catch (error) {
+      console.error("Failed to save registration data to Airtable:", error);
+      throw error;
+    }
+  };
 
   const logout = () => persist(null);
 

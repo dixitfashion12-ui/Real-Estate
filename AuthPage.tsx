@@ -29,15 +29,20 @@ export function AuthPage({ mode }: { mode: "login" | "register" }) {
     defaultValues: { name: "", email: "", password: "" },
   });
 
-  const onSubmit = (values: { name?: string; email: string; password: string }) => {
-    if (isLogin) {
-      login(values.email);
-      toast.success("Welcome back!");
-    } else {
-      register(values.name!, values.email);
-      toast.success("Account created — welcome to Homzy!");
+  const onSubmit = async (values: { name?: string; email: string; password: string }) => {
+    try {
+      if (isLogin) {
+        await login(values.email, values.password);
+        toast.success("Welcome back!");
+      } else {
+        await register(values.name!, values.email, values.password);
+        toast.success("Account created — welcome to Homzy!");
+      }
+      navigate({ to: "/dashboard" });
+    } catch (error) {
+      toast.error("Failed to complete authentication");
+      console.error(error);
     }
-    navigate({ to: "/dashboard" });
   };
 
   return (
