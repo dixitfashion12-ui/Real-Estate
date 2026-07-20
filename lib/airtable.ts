@@ -54,9 +54,17 @@ export async function saveUserToAirtable(data: {
     );
 
     if (!response.ok) {
-      const error = await response.json();
-      console.error("Airtable error:", error);
-      throw new Error(`Airtable API error: ${error.error?.message}`);
+      let error;
+      try {
+        error = await response.json();
+        console.error("Airtable error:", error);
+        throw new Error(`Airtable API error: ${error.error?.message}`);
+      } catch (parseError) {
+        console.error(`HTTP ${response.status}: ${response.statusText}`, response);
+        throw new Error(
+          `Airtable API failed: HTTP ${response.status} - ${response.statusText}`
+        );
+      }
     }
 
     const data = await response.json();
