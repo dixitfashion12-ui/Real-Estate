@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Remote debugging config for CEP. Open the listed port in Chrome
+  (chrome://inspect or http://localhost:PORT) while the panel is running
+  in After Effects to debug the JS/HTML layer.
+-->
+<ExtensionList>
+  <Extension Id="com.motioncraft.pro.panel">
+    <HostList>
+      <Host Name="AEFT" Port="8088"/>
+    </HostList>
+  </Extension>
+</ExtensionList>

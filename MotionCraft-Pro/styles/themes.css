@@ -1,0 +1,63 @@
+/*
+  themes.css — design tokens for MotionCraft Pro.
+  Light & dark themes are driven purely by CSS custom properties so the
+  whole UI recolors by swapping a class on #app (see settings.js).
+*/
+
+:root {
+  /* Spacing / geometry scale */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px;
+  --radius-sm: 6px; --radius: 10px; --radius-lg: 14px; --radius-pill: 999px;
+  --font: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --fs-xs: 11px; --fs-sm: 12px; --fs-md: 13px; --fs-lg: 15px; --fs-xl: 18px;
+  --ease-smooth: cubic-bezier(.22,.61,.36,1);
+  --ease-back: cubic-bezier(.34,1.56,.64,1);
+  --dur-fast: .12s; --dur: .2s; --dur-slow: .34s;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.25);
+  --shadow-2: 0 6px 20px rgba(0,0,0,.35);
+}
+
+/* ---------- DARK (default, Adobe-like graphite) ---------- */
+.theme-dark {
+  --bg-0: #17181b;   /* app background */
+  --bg-1: #1e2024;   /* panels */
+  --bg-2: #26292e;   /* cards */
+  --bg-3: #2f333a;   /* raised / hover */
+  --bg-inset: #131417;
+  --line: #34383f;
+  --line-soft: #2a2e34;
+  --txt-0: #f3f4f6;
+  --txt-1: #c3c7cf;
+  --txt-2: #878d98;
+  --txt-3: #5c626c;
+  --accent: #4c8dff;
+  --accent-2: #7c5cff;
+  --accent-ghost: rgba(76,141,255,.14);
+  --good: #37c98b;
+  --warn: #ffb020;
+  --danger: #ff5c6c;
+  --star: #ffcb45;
+}
+
+/* ---------- LIGHT ---------- */
+.theme-light {
+  --bg-0: #eceef1;
+  --bg-1: #f6f7f9;
+  --bg-2: #ffffff;
+  --bg-3: #eef1f5;
+  --bg-inset: #e2e5ea;
+  --line: #d5d9df;
+  --line-soft: #e3e6eb;
+  --txt-0: #14171c;
+  --txt-1: #3b414b;
+  --txt-2: #6b7280;
+  --txt-3: #9aa1ac;
+  --accent: #2f6fed;
+  --accent-2: #6b46f0;
+  --accent-ghost: rgba(47,111,237,.12);
+  --good: #17a06a;
+  --warn: #c67d00;
+  --danger: #e0384a;
+  --star: #e6a800;
+}

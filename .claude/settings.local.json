@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"C:\\\\Users\\\\lenovo\\\\Desktop\\\\REAL ESTATE PROPERTY WEBSITE\\\\\" | head -30)",
+      "Skill(code-review)",
+      "Skill(code-review:*)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:8080/\" -UseBasicParsing)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:8080/\" -UseBasicParsing -TimeoutSec 5)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:8080/\" -UseBasicParsing -TimeoutSec 5 2>&1)",
+      "PowerShell(Start-Sleep -Seconds 8; \\(Invoke-WebRequest -Uri \"http://localhost:8080/\" -UseBasicParsing -TimeoutSec 5\\).StatusCode)",
+      "PowerShell(Start-Sleep -Seconds 8; \\(Invoke-WebRequest -Uri \"http://localhost:8080/\" -UseBasicParsing -TimeoutSec 5 -SkipHttpErrorCheck\\).StatusCode)",
+      "PowerShell(\\(Invoke-WebRequest -Uri \"http://localhost:8080/\" -UseBasicParsing -TimeoutSec 5 -ErrorAction SilentlyContinue\\).StatusCode)",
+      "PowerShell(Start-Sleep -Seconds 7; \\(Invoke-WebRequest -Uri \"http://localhost:8080/\" -UseBasicParsing -TimeoutSec 5 -ErrorAction SilentlyContinue\\).StatusCode)",
+      "Bash(git init *)",
+      "Bash(git config *)",
+      "Bash(git remote *)",
+      "Bash(move gitignore *)",
+      "Bash(git add *)",
+      "Bash(git reset *)",
+      "Bash(cd \"C:\\\\Users\\\\lenovo\\\\Desktop\\\\REAL ESTATE PROPERTY WEBSITE\" && rm .git/index.lock && git status)"
+    ]
+  }
+}

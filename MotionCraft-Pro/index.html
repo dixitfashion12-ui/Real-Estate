@@ -1,0 +1,89 @@
+<!--
+  MotionCraft Pro — main panel UI shell.
+  The DOM here is intentionally minimal: the sidebar, preset grid, and
+  inspector are generated at runtime by scripts/core/ui.js from the JSON
+  preset library, so adding presets never requires touching this file.
+-->
+<meta charset="utf-8" />
+<title>MotionCraft Pro</title>
+
+<link rel="stylesheet" href="styles/themes.css" />
+<link rel="stylesheet" href="styles/main.css" />
+
+<div id="app" class="theme-dark" data-view="grid">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside id="sidebar" class="sidebar">
+    <div class="brand">
+      <span class="brand__logo" aria-hidden="true">◆</span>
+      <span class="brand__name">MotionCraft<span class="brand__pro">Pro</span></span>
+    </div>
+
+    <nav id="categoryNav" class="cat-nav" aria-label="Categories">
+      <!-- category buttons injected by ui.js -->
+    </nav>
+
+    <div class="sidebar__footer">
+      <button class="icon-btn" id="btnSettings" title="Settings (,)" aria-label="Settings">⚙</button>
+      <button class="icon-btn" id="btnTheme" title="Toggle theme (T)" aria-label="Toggle theme">◐</button>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <header class="topbar">
+      <div class="search">
+        <span class="search__icon" aria-hidden="true">⌕</span>
+        <input id="searchInput" class="search__input" type="text"
+               placeholder="Search animations…  (press /)" autocomplete="off" spellcheck="false" />
+        <button id="searchClear" class="search__clear" aria-label="Clear search" hidden>✕</button>
+      </div>
+
+      <div class="topbar__actions">
+        <div class="viewtoggle" role="group" aria-label="View mode">
+          <button id="viewGrid" class="viewtoggle__btn is-active" title="Grid view" aria-label="Grid view">▦</button>
+          <button id="viewList" class="viewtoggle__btn" title="List view" aria-label="List view">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Selection / status strip -->
+    <div id="statusStrip" class="statusstrip">
+      <span id="selInfo" class="statusstrip__sel">No layers selected</span>
+      <label class="switch" title="Auto motion blur">
+        <input type="checkbox" id="optMotionBlur" checked /><span>Motion Blur</span>
+      </label>
+      <label class="switch" title="Auto Easy Ease">
+        <input type="checkbox" id="optEasyEase" checked /><span>Easy Ease</span>
+      </label>
+    </div>
+
+    <!-- Preset results -->
+    <section id="results" class="results" tabindex="0" aria-label="Animation presets">
+      <!-- preset cards injected by ui.js -->
+    </section>
+
+    <div id="progressBar" class="progress" hidden><div class="progress__fill"></div></div>
+  </main>
+
+  <!-- ============ INSPECTOR (slide-in) ============ -->
+  <aside id="inspector" class="inspector" aria-hidden="true">
+    <!-- global controls for the focused preset, injected by ui.js -->
+  </aside>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="modalRoot"></div>
+</div>
+
+<!-- CEP host bridge -->
+<script src="scripts/lib/CSInterface.js"></script>
+
+<!-- App modules (ES5-safe, no bundler required by CEP) -->
+<script src="scripts/core/state.js"></script>
+<script src="scripts/core/jsx-bridge.js"></script>
+<script src="scripts/core/presets.js"></script>
+<script src="scripts/core/search.js"></script>
+<script src="scripts/core/favorites.js"></script>
+<script src="scripts/core/settings.js"></script>
+<script src="scripts/core/ui.js"></script>
+<script src="scripts/core/app.js"></script>
