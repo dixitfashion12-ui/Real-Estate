@@ -167,7 +167,6 @@ export async function saveInquiryToAirtable(data: {
               fields: {
                 Name: data.name,
                 Email: data.email,
-                Phone: data.phone || "",
                 Message: data.message,
                 "Property ID": data.propertyId || "",
                 "Property Title": data.propertyTitle || "",
