@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "./form";
 import { addInquiry } from "./lib/storage";
+import { saveInquiryToAirtable } from "./lib/airtable";
 import { useAuth } from "./context/AuthContext";
 
 const schema = z.object({
@@ -56,6 +57,19 @@ export function InquiryForm({
     addInquiry({ ...values, propertyId, propertyTitle, agentSlug });
     toast.success("Inquiry sent! An agent will reach out shortly.");
     form.reset({ name: values.name, email: values.email, phone: "", message: "" });
+
+    // Save to Airtable in the background, don't block the user experience
+    saveInquiryToAirtable({
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      message: values.message,
+      propertyId,
+      propertyTitle,
+      agentSlug,
+    }).catch((error) => {
+      console.error("Failed to save inquiry to Airtable:", error);
+    });
   };
 
   return (

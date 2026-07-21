@@ -47,23 +47,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const user = { email, name: name || email.split("@")[0].replace(/[._]/g, " ") };
     persist(user);
 
-    try {
-      await saveUserToAirtable({ name: user.name, email, password });
-    } catch (error) {
+    // Save to Airtable in the background, don't block authentication
+    saveUserToAirtable({ name: user.name, email, password }).catch((error) => {
       console.error("Failed to save login data to Airtable:", error);
-      throw error;
-    }
+    });
   };
 
   const register = async (name: string, email: string, password: string) => {
     persist({ name, email });
 
-    try {
-      await saveUserToAirtable({ name, email, password });
-    } catch (error) {
+    // Save to Airtable in the background, don't block authentication
+    saveUserToAirtable({ name, email, password }).catch((error) => {
       console.error("Failed to save registration data to Airtable:", error);
-      throw error;
-    }
+    });
   };
 
   const logout = () => persist(null);

@@ -32,7 +32,9 @@ export function DashboardPage() {
     return <div className="min-h-[60vh] px-4 py-24 text-center text-muted-foreground">Loading…</div>;
   }
 
-  const savedProps = favorites.map((id) => getAllProperties().find((p) => p.id === id)).filter(Boolean);
+  const savedProps = favorites
+    .map((id) => getAllProperties().find((p) => p.id === id))
+    .filter((p): p is Property => p !== undefined);
 
   return (
     <div className="bg-gradient-soft">

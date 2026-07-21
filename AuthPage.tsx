@@ -19,23 +19,29 @@ const registerSchema = loginSchema.extend({
   name: z.string().min(2, "Enter your name"),
 });
 
+type LoginValues = z.infer<typeof loginSchema>;
+type RegisterValues = z.infer<typeof registerSchema>;
+type AuthValues = LoginValues | RegisterValues;
+
 export function AuthPage({ mode }: { mode: "login" | "register" }) {
   const navigate = useNavigate();
   const { login, register } = useAuth();
   const isLogin = mode === "login";
 
-  const form = useForm<{ name?: string; email: string; password: string }>({
+  const form = useForm<AuthValues>({
     resolver: zodResolver(isLogin ? loginSchema : registerSchema),
     defaultValues: { name: "", email: "", password: "" },
   });
 
-  const onSubmit = async (values: { name?: string; email: string; password: string }) => {
+  const onSubmit = async (values: AuthValues) => {
     try {
       if (isLogin) {
-        await login(values.email, values.password);
+        const loginValues = values as LoginValues;
+        await login(loginValues.email, loginValues.password);
         toast.success("Welcome back!");
       } else {
-        await register(values.name!, values.email, values.password);
+        const registerValues = values as RegisterValues;
+        await register(registerValues.name, registerValues.email, registerValues.password);
         toast.success("Account created — welcome to Homzy!");
       }
       navigate({ to: "/dashboard" });
