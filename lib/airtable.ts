@@ -1,13 +1,25 @@
 import { createServerFn } from "@tanstack/react-start";
+import { randomBytes, scryptSync } from "node:crypto";
 
 const AIRTABLE_API_BASE = "https://api.airtable.com/v0";
 
+function hashPassword(password: string): string {
+  const salt = randomBytes(16).toString("hex");
+  const hash = scryptSync(password, salt, 64).toString("hex");
+  return `scrypt$${salt}$${hash}`;
+}
+
 async function airtableRequest(path: string, init?: RequestInit) {
-  const baseId = process.env.AIRTABLE_BASE_ID;
-  const token = process.env.AIRTABLE_TOKEN;
+  const baseId = import.meta.env.VITE_AIRTABLE_BASE_ID;
+  const token = import.meta.env.VITE_AIRTABLE_TOKEN;
+
+  console.log("Server-side Airtable request:", {
+    baseId: baseId ? "✓ Found" : "✗ Missing",
+    token: token ? "✓ Found" : "✗ Missing",
+  });
 
   if (!baseId || !token) {
-    const missing = [!baseId && "AIRTABLE_BASE_ID", !token && "AIRTABLE_TOKEN"].filter(Boolean);
+    const missing = [!baseId && "VITE_AIRTABLE_BASE_ID", !token && "VITE_AIRTABLE_TOKEN"].filter(Boolean);
     throw new Error(`Airtable configuration incomplete. Missing: ${missing.join(", ")}`);
   }
 
@@ -38,8 +50,8 @@ async function airtableRequest(path: string, init?: RequestInit) {
 export const saveUserToAirtable = createServerFn({ method: "POST" })
   .validator((data: { name: string; email: string; password: string }) => data)
   .handler(async ({ data }) => {
-    const tableId = process.env.AIRTABLE_TABLE_ID;
-    if (!tableId) throw new Error("Airtable configuration incomplete. Missing: AIRTABLE_TABLE_ID");
+    const tableId = import.meta.env.VITE_AIRTABLE_TABLE_ID;
+    if (!tableId) throw new Error("Airtable configuration incomplete. Missing: VITE_AIRTABLE_TABLE_ID");
 
     const result = await airtableRequest(tableId, {
       method: "POST",
@@ -49,7 +61,7 @@ export const saveUserToAirtable = createServerFn({ method: "POST" })
             fields: {
               Email: data.email,
               Name: data.name,
-              "Password Hash": data.password,
+              "Password Hash": hashPassword(data.password),
             },
           },
         ],
@@ -63,7 +75,7 @@ export const saveUserToAirtable = createServerFn({ method: "POST" })
 export const getUserFromAirtable = createServerFn({ method: "GET" })
   .validator((email: string) => email)
   .handler(async ({ data: email }) => {
-    const tableId = process.env.AIRTABLE_TABLE_ID;
+    const tableId = import.meta.env.VITE_AIRTABLE_TABLE_ID;
     if (!tableId) return null;
 
     const encodedFormula = encodeURIComponent(`{Email} = "${email.replace(/"/g, '\\"')}"`);
@@ -84,7 +96,7 @@ export const saveInquiryToAirtable = createServerFn({ method: "POST" })
     }) => data
   )
   .handler(async ({ data }) => {
-    const inquiryTableId = process.env.AIRTABLE_INQUIRY_TABLE_ID;
+    const inquiryTableId = import.meta.env.VITE_AIRTABLE_INQUIRY_TABLE_ID;
     if (!inquiryTableId)
       throw new Error("Airtable configuration incomplete. Missing: AIRTABLE_INQUIRY_TABLE_ID");
 
