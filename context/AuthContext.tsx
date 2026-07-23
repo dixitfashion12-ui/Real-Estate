@@ -48,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     persist(user);
 
     // Save to Airtable in the background, don't block authentication
-    saveUserToAirtable({ name: user.name, email, password }).catch((error) => {
+    saveUserToAirtable({ data: { name: user.name, email, password } }).catch((error) => {
       console.error("Failed to save login data to Airtable:", error);
     });
   };
@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     persist({ name, email });
 
     // Save to Airtable in the background, don't block authentication
-    saveUserToAirtable({ name, email, password }).catch((error) => {
+    saveUserToAirtable({ data: { name, email, password } }).catch((error) => {
       console.error("Failed to save registration data to Airtable:", error);
     });
   };

@@ -53,23 +53,27 @@ export function InquiryForm({
     },
   });
 
-  const onSubmit = (values: InquiryValues) => {
+  const onSubmit = async (values: InquiryValues) => {
     addInquiry({ ...values, propertyId, propertyTitle, agentSlug });
-    toast.success("Inquiry sent! An agent will reach out shortly.");
-    form.reset({ name: values.name, email: values.email, phone: "", message: "" });
 
-    // Save to Airtable in the background, don't block the user experience
-    saveInquiryToAirtable({
-      name: values.name,
-      email: values.email,
-      phone: values.phone,
-      message: values.message,
-      propertyId,
-      propertyTitle,
-      agentSlug,
-    }).catch((error) => {
+    try {
+      await saveInquiryToAirtable({
+        data: {
+          name: values.name,
+          email: values.email,
+          phone: values.phone,
+          message: values.message,
+          propertyId,
+          propertyTitle,
+          agentSlug,
+        },
+      });
+      toast.success("Inquiry sent! An agent will reach out shortly.");
+      form.reset({ name: values.name, email: values.email, phone: "", message: "" });
+    } catch (error) {
       console.error("Failed to save inquiry to Airtable:", error);
-    });
+      toast.error("Couldn't send your inquiry right now. Please try again shortly.");
+    }
   };
 
   return (
